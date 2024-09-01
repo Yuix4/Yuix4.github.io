@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenLit.net - Writers Sharing Platform</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header styles */
+        .header {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .nav a:hover {
+            color: #007bff;
+        }
+
+        /* Main content styles */
+        main {
+            margin-top: 80px;
+            padding: 2rem 0;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Form styles */
+        form {
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Book list styles */
+        .book-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .book-item {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 1rem;
+        }
+
+        .book-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 3px;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Theme toggle styles */
+        .switch {
+            font-size: 17px;
+            position: relative;
+            display: inline-block;
+            width: 3.5em;
+            height: 2em;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #fff;
+            border: 1px solid #adb5bd;
+            transition: .4s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 1.4em;
+            width: 1.4em;
+            border-radius: 20px;
+            left: 0.27em;
+            bottom: 0.25em;
+            background-color: #adb5bd;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #636363;
+            border: 1px solid #636363;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #007bff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(1.4em);
+            background-color: #fff;
+        }
+
+        /* Dark theme styles */
+        body.dark-mode {
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .header {
+            background-color: #2d3748;
+        }
+
+        body.dark-mode .nav a,
+        body.dark-mode .logo {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .nav a:hover {
+            color: #63b3ed;
+        }
+
+        body.dark-mode form,
+        body.dark-mode .book-item {
+            background-color: #2d3748;
+            color: #e2e8f0;
+        }
+
+        body.dark-mode input[type="text"],
+        body.dark-mode input[type="email"],
+        body.dark-mode select,
+        body.dark-mode textarea {
+            background-color: #4a5568;
+            color: #e2e8f0;
+            border-color: #4a5568;
+        }
+
+        body.dark-mode button {
+            background-color: #63b3ed;
+        }
+
+        body.dark-mode button:hover {
+            background-color: #4299e1;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <a href="#" class="logo">OpenLit.net</a>
+            <nav class="nav">
+                <a href="#search">Search Books</a>
+                <a href="#discover">Discover Books</a>
+                <a href="#submit">Submit Your Book</a>
+                <a href="#contact">Contact</a>
+                <label class="switch">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="slider"></span>
+                </label>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="search">
+            <h2>Search Books</h2>
+            <form id="searchForm">
+                <div class="form-group">
+                    <input type="text" id="titleSearch" placeholder="Search by title">
+                </div>
+                <div class="form-group">
+                    <select id="genreSearch">
+                        <option value="">All Genres</option>
+                        <option value="fiction">Fiction</option>
+                        <option value="non-fiction">Non-Fiction</option>
+                        <option value="mystery">Mystery</option>
+                        <option value="scifi">Sci-Fi</option>
+                        <option value="romance">Romance</option>
+                    </select>
+                </div>
+                <button type="submit">Search</button>
+            </form>
+        </section>
+
+        <section id="discover">
+            <h2>Discover Books</h2>
+            <div id="bookList" class="book-list">
+                <!-- Book items will be dynamically added here -->
+            </div>
+        </section>
+
+        <section id="submit">
+            <h2>Submit Your Book</h2>
+            <form id="submitForm">
+                <div class="form-group">
+                    <label for="bookTitle">Book Title</label>
+                    <input type="text" id="bookTitle" name="bookTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookCover">Book Cover</label>
+                    <input type="file" id="bookCover" name="bookCover" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookFile">Book File (PDF)</label>
+                    <input type="file" id="bookFile" name="bookFile" accept=".pdf" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookGenre">Genre</label>
+                    <select id="bookGenre" name="bookGenre" required>
+                        <option value="">Select Genre</option>
+                        <option value="fiction">Fiction</option>
+                        <option value="non-fiction">Non-Fiction</option>
+                        <option value="mystery">Mystery</option>
+                        <option value="scifi">Sci-Fi</option>
+                        <option value="romance">Romance</option>
+                    </select>
+                </div>
+                <button type="submit">Submit Book</button>
+            </form>
+        </section>
+
+        <section id="contact">
+            <h2>Contact Us</h2>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="contactName">Your Name</label>
+                    <input type="text" id="contactName" name="contactName" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactEmail">Your Email</label>
+                    <input type="email" id="contactEmail" name="contactEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactTitle">Title</label>
+                    <input type="text" id="contactTitle" name="contactTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactReason">Reason for Contact</label>
+                    <textarea id="contactReason" name="contactReason" required></textarea>
+                </div>
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        // Form submission (mock functionality)
+        const submitForm = document.getElementById('submitForm');
+        submitForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(submitForm);
+            console.log('Book submitted:', Object.fromEntries(formData));
+            alert('Book submitted successfully! (This is a mock submission)');
+            submitForm.reset();
+        });
+
+        // Contact form submission (mock functionality)
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(contactForm);
+            console.log('Contact form submitted:', Object.fromEntries(formData));
+            alert('Message sent successfully! (This is a mock submission)');
+            contactForm.reset();
+        });
+
+        // Mock book data
+        const mockBooks = [
+            { title: 'The Great Adventure', genre: 'Fiction', cover: '/api/placeholder/200/300' },
+            { title: 'Mystery at Midnight', genre: 'Mystery', cover: '/api/placeholder/200/300' },
+            { title: 'Galactic Odyssey', genre: 'Sci-Fi', cover: '/api/placeholder/200/300' },
+        ];
+
+        // Display mock books
+        const bookList = document.getElementById('bookList');
+        function displayBooks(books) {
+            bookList.innerHTML = '';
+            books.forEach(book => {
+                const bookItem = document.createElement('div');
+                bookItem.className = 'book-item';
+                bookItem.innerHTML = `
+                    <img src="${book.cover}" alt="${book.title}">
+                    <h3>${book.title}</h3>
+                    <p>Genre: ${book.genre}</p>
+                `;
+                bookList.appendChild(bookItem);
+            });
+        }
+        displayBooks(mockBooks);
+
+        // Search functionality (mock)
+        const searchForm = document.getElementById('searchForm');
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const titleSearch = document.getElementById('titleSearch').value.toLowerCase();
+            const genreSearch = document.getElementById('genreSearch').value.toLowerCase();
+            const filteredBooks = mockBooks.filter(book => 
+                book.title.toLowerCase().includes(titleSearch) &&
+                (genreSearch === '' || book.genre.toLowerCase() === genreSearch)
+            );
+            displayBooks(filteredBooks);
+        });
+    </script>
+</body>
+</html>
